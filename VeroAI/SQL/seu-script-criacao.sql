@@ -1,0 +1,51 @@
+-- =========================================================
+-- SCRIPT DE CRIAÇÃO - SPRINT 3
+-- =========================================================
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE TB_INTERVENCAO_OPERACIONAL CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE TB_RELATORIO_PRIORIDADE CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE TB_TRECHO_RODOVIA CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE TB_EQUIPE_MANUTENCAO CASCADE CONSTRAINTS';
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
+ 
+-- 1. Tabela de Equipes de Manutenção
+CREATE TABLE TB_EQUIPE_MANUTENCAO (
+    id_equipe NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nome_equipe VARCHAR2(100) NOT NULL UNIQUE
+);
+ 
+-- 2. Tabela de Trechos da Rodovia
+CREATE TABLE TB_TRECHO_RODOVIA (
+    identificador VARCHAR2(50) PRIMARY KEY,
+    km_inicial NUMBER(6,2) NOT NULL,
+    km_final NUMBER(6,2) NOT NULL,
+    nivel_vegetacao NUMBER(6,2) NOT NULL,
+    is_umido NUMBER(1) NOT NULL,
+    is_iot NUMBER(1) DEFAULT 0 NOT NULL
+);
+ 
+-- 3. Tabela de Intervenções
+CREATE TABLE TB_INTERVENCAO_OPERACIONAL (
+    id_intervencao NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tipo_intervencao VARCHAR2(50) NOT NULL,
+    id_equipe NUMBER NOT NULL,
+    id_trecho VARCHAR2(50) NOT NULL,
+    data_registro DATE DEFAULT SYSDATE,
+    CONSTRAINT fk_interv_equipe FOREIGN KEY (id_equipe) REFERENCES TB_EQUIPE_MANUTENCAO(id_equipe),
+    CONSTRAINT fk_interv_trecho FOREIGN KEY (id_trecho) REFERENCES TB_TRECHO_RODOVIA(identificador)
+);
+ 
+-- 4. Tabela de Relatórios (Histórico do motor de regras)
+CREATE TABLE TB_RELATORIO_PRIORIDADE (
+    id_relatorio NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    qt_urgente NUMBER NOT NULL,
+    qt_critico NUMBER NOT NULL,
+    qt_atencao NUMBER NOT NULL,
+    qt_normal NUMBER NOT NULL,
+    resumo VARCHAR2(500) NOT NULL,
+    data_geracao DATE DEFAULT SYSDATE
+);
+ 
+COMMIT;
