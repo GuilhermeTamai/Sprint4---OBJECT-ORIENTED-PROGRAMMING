@@ -250,7 +250,8 @@ Roteiro executado no **Insomnia** contra o Oracle da FIAP, em ordem. Os 20 print
 - **Testes de API** com `@SpringBootTest` + `MockMvc` (`VeroAI/src/test`). Os antigos testes manuais com `main` viraram testes JUnit.
 
 ## 🔀 Boas práticas Git
-- Commits incrementais por camada, no padrão *Conventional Commits*: `feat: entities`, `feat: repositories`, `feat: services`, `feat: controllers`, `test: ...`, `docs: ...`.
+- O projeto foi migrado e versionado de uma vez ao final da sprint; reconhecemos que isso não seguiu o
+  princípio de commits incrementais.
 - `.gitignore` cobre `target/`, arquivos de IDE (`.idea/`, `.vscode/`, `.classpath`, `.project`, `.settings/`) e credenciais locais (`.env`).
 - **Nenhuma senha é versionada:** o `application.properties` usa apenas as variáveis `${DB_USER}` e `${DB_PASSWORD}`.
 
